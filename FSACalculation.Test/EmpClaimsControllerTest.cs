@@ -94,6 +94,7 @@ namespace FSACalculation.Test
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
+
             _repository.Setup(m => m.EmployeeExistAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
             var claim = new Claims { ID = 1};
@@ -105,8 +106,8 @@ namespace FSACalculation.Test
 
             var mockViewModel = new ClaimsForUpdateViewModel();
             mockViewModel.ClaimId = It.IsAny<int>();
-
             // Act
+
             var result = controller.UpdateClaims(It.IsAny<int>(), mockViewModel);
 
             // Assert
@@ -136,8 +137,8 @@ namespace FSACalculation.Test
 
             var mockViewModel = new ClaimsViewModel();
             mockViewModel.ClaimId = It.IsAny<int>();
-
             // Act
+
             var result = controller.AdminApprovalAsync(It.IsAny<int>(), It.IsAny<int>(), mockViewModel);
 
             // Assert

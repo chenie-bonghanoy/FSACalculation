@@ -29,8 +29,8 @@ namespace FSACalculation.Test
             var signInManager = new Mock<SignInManager<UserLogin>>(userManager.Object, Mock.Of<IHttpContextAccessor>(), Mock.Of<IUserClaimsPrincipalFactory<UserLogin>>(), null, null, null, null);
             var controller = new AccountController(logger.Object, signInManager.Object, userManager.Object);
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
-                                        new Claim(ClaimTypes.NameIdentifier, "testValue"),
-                                        new Claim(ClaimTypes.Name, "test@test.com")
+                                        new Claim(ClaimTypes.NameIdentifier, "SomeValueHere"),
+                                        new Claim(ClaimTypes.Name, "gunnar@somecompany.com")
                                    }, "TestAuthentication"));
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
