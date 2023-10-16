@@ -1,0 +1,32 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+#claimScreen {
+    background-color: lightgray;
+    border-radius: 20px;
+}
+
+#success {
+    border: solid green 2px;
+}
+
+#warning {
+    background-color: solid red 2px;
+}
+

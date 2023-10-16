@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ClaimsViewModel>
+
+@{
+    ViewData["Title"] = "AdminApproval";
+}
+
+<div style="text-align:center">
+    <h3>Claims Approval</h3>
+</div>
+<hr />
+@if (TempData["StatusUpdate"] != null)
+{
+    @if (Convert.ToInt16(TempData["StatusUpdateCode"]) == 1)
+    {
+        <div class="text-success">
+            @TempData["StatusUpdate"]
+        </div>
+    }
+    else
+    {
+        <div class="text-danger">
+            @TempData["StatusUpdate"]
+        </div>
+    }
+    <hr />
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceiptAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaimAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalClaimAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReferenceNo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+                   <td>
+                @Html.DisplayFor(modelItem => item.DateSubmitted)
+            </td>
+            <td>
+                @((Status.StatusType)@item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceiptAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClaimAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalClaimAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferenceNo)
+            </td>
+            <td>
+                @if (item.Status == (int)Status.StatusType.Pending)
+                {
+                        @* <a class="btn btn-primary" asp-action="AdminApproval" asp-route-claimId="@item.ClaimId" asp-controller="Home">Edit</a> *@
+
+                        <a class="btn btn-success" asp-controller="Home" asp-action="UpdateStatus" asp-route-claimId="@item.ClaimId" asp-route-empId="@item.EmpId" asp-route-approvalCode="@((int)Status.StatusType.Approved)">Approve</a>
+                        <a class="btn btn-danger" asp-controller="Home" asp-action="UpdateStatus" asp-route-claimId="@item.ClaimId" asp-route-empId="@item.EmpId" asp-route-approvalCode="@((int)Status.StatusType.Denied)">Deny</a>
+                }
+                else{
+                    <button class="btn btn-success" disabled>Approve</button>
+                    <button class="btn btn-danger" disabled>Deny</button>
+                }
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

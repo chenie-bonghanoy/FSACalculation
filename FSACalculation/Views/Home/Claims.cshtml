@@ -1,0 +1,170 @@
+﻿@model EmployeeClaimsViewModel
+
+@{
+    ViewData["Title"] = "Claims";
+    ViewData["Total"] = 0.0;
+}
+
+<div>
+    <div style="text-align:center">
+        <h3>Claims List</h3>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Name : @Model.FirstName @Model.LastName</h6>
+            <h6>ID : @Model.Id</h6>
+            <h6>Year Coverage : @Model.CoverageYear</h6>
+            <h6>
+                FSA Amount :
+                 @{
+                    decimal total = Model.FSAAmount;
+                    foreach (var item in Model.Claims)
+                    {
+                        if(item.Status == (int)Status.StatusType.Approved)
+                        {
+                            total += item.TotalClaimAmount;
+                        }
+                    }
+                    @total.ToString("#,##0.00")
+                }
+                
+            </h6>
+        </div>
+        <div class="col-md-6">
+            <h6>Available FSA  : @Model.FSAAmount.ToString("#,##0.00") </h6>
+            <h6>Pending Claims : 
+                @{
+                    decimal pending = 0;
+                    foreach (var item in Model.Claims)
+                    {
+                        if (item.Status == (int)Status.StatusType.Pending)
+                        {
+                            pending += item.TotalClaimAmount;
+                        }
+                    }
+                    @pending.ToString("#,##0.00")
+                }
+            </h6>
+            <h6>Approved Claims : 
+                @{
+                    decimal approved = 0;
+                    foreach (var item in Model.Claims)
+                    {
+                        if (item.Status == (int)Status.StatusType.Approved)
+                        {
+                            approved += item.TotalClaimAmount;
+                        }
+                    }
+                    @approved.ToString("#,##0.00")
+                }
+            </h6>
+
+        </div>
+    </div>
+    <hr />
+    <p>
+        <a class="btn btn-primary" asp-action="CreateClaim" asp-route-id="@Model.Id">Create New Claim</a>
+    </p>
+
+    <hr />
+    @if (TempData["DeleteMessage"] != null)
+    {
+        @if (Convert.ToInt16(TempData["DeleteStatus"]) == 1)
+        {
+            <div class="text-success">
+                @TempData["DeleteMessage"]
+            </div>
+        }
+        else
+        {
+            <div class="text-warning">
+                @TempData["DeleteMessage"]
+            </div>
+        }
+        <hr />
+    }
+
+    <div>
+        <table class="table table-sm table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Date Submitted
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Receipt Date
+                    </th>
+                    <th>
+                        Receipt No
+                    </th>
+                    <th>
+                        Receipt Amount
+                    </th>
+                    <th>
+                        Claim Amount
+                    </th>
+                    <th>
+                        Total Claim Amount
+                    </th>
+                    <th>
+                        Reference No
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ClaimsCount != 0)
+                {
+                    @foreach (var item in Model.Claims)
+                    {
+                        <tr>
+                            <td>
+                                @item.DateSubmitted.ToShortDateString()
+                            </td>
+                            <td>
+                                @((Status.StatusType)@item.Status)
+                            </td>
+                            <td>
+                                @item.ReceiptDate.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.ReceiptNo
+                            </td>
+                            <td>
+                                @item.ReceiptAmount.ToString("#,##0.00")
+                            </td>
+                            <td>
+                                @item.ClaimAmount.ToString("#,##0.00")
+                            </td>
+                            <td>
+                                @item.TotalClaimAmount.ToString("#,##0.00")
+                            </td>
+                            <td>
+                                @item.ReferenceNo
+                            </td>
+                            <td>
+                                @if (item.Status == (int)Status.StatusType.Pending)
+                                {
+                                    <a class="btn btn-primary" asp-action="UpdateClaim" asp-route-id="@Model.Id" asp-route-claimId="@item.ClaimId" asp-controller="Home">Edit</a>
+                                    <span>   </span>
+                                    <a class="btn btn-danger" asp-action="DeleteClaim" asp-route-id="@Model.Id" asp-route-claimId="@item.ClaimId" asp-controller="Home">Delete</a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary" disabled>Edit</button>
+                                    <button class="btn btn-danger" disabled>Delete</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</div>

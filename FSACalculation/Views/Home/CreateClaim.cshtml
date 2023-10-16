@@ -1,0 +1,95 @@
+﻿@model FSACalculation.ViewModels.ClaimsForCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Claim";
+}
+
+
+<div class="row">
+    <div class="col-md-4 offset-4" id="claimScreen">
+        <br />
+        <div style="text-align:center">
+            <h4>Submit a Claim</h4>
+        </div>
+        <hr />
+        @if (!string.IsNullOrEmpty(ViewBag.UserMessage))
+        {
+            @if (ViewBag.ResponseStatus == 0)
+            {
+                <div class="text-danger">@ViewBag.UserMessage</div>
+            }
+            else
+            {
+                <div class="text-success">@ViewBag.UserMessage</div>
+            }
+            <hr />
+        }
+        
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DateSubmitted" class="control-label"></label>
+                @* <input asp-for="DateSubmitted" class="form-control" /> *@
+                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
+                    <input asp-for="DateSubmitted" type="date" class="form-control">
+                    <i class="fas fa-calendar input-prefix"></i>
+                </div>
+                <span asp-validation-for="DateSubmitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceiptDate" class="control-label"></label>
+                @* <input asp-for="ReceiptDate" class="form-control" /> *@
+                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
+                    <input asp-for="ReceiptDate" type="date" class="form-control">
+                    <i class="fas fa-calendar input-prefix"></i>
+                </div>
+                <span asp-validation-for="ReceiptDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceiptNo" class="control-label"></label>
+                <input asp-for="ReceiptNo" class="form-control" />
+                <span asp-validation-for="ReceiptNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceiptAmount" class="control-label"></label>
+                <input asp-for="ReceiptAmount" class="form-control" />
+                <span asp-validation-for="ReceiptAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClaimAmount" class="control-label"></label>
+                <input asp-for="ClaimAmount" class="form-control" />
+                <span asp-validation-for="ClaimAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalClaimAmount" class="control-label"></label>
+                <input asp-for="TotalClaimAmount" class="form-control" />
+                <span asp-validation-for="TotalClaimAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReferenceNo" class="control-label"></label>
+                <input asp-for="ReferenceNo" class="form-control" />
+                <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+            </div>
+            <br />
+            <div style="display:flex">
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+                <div style="margin-left:auto;margin-right:0">
+                    <a asp-action="Claims" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+            <br />
+
+        </form>
+    </div>
+</div>
+
+@* 
+<div>
+    <a asp-action="Claims">Back to List</a>
+</div> *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
