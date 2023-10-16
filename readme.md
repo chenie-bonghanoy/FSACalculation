@@ -6,10 +6,11 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
 - [Usage](#usage)
-  - [Submitting a Claim](#creating-a-claim)
-  - [Editing a Claim](#updating-a-claim)
-  - [Deleting a Claim](#deleting-a-claim)
-  - [Viewing Submitted Claims](#viewing-submitted-claims)
+  - [Create new claim](#create-new-claim)
+  - [Editing a Claim](#edit)
+  - [Deleting a Claim](#delete)
+  - [Viewing of Submitted Claims](#claims-list)
+  - [Claims Approval](#claims-approval)
 
 ## Description
 The FSA Calculation Application is a system for FSA claims. This allows the user to submit new claims, edit existing claims, delete claims, and view a list of all the submitted claims. The Administrator of this application can view and approve or deny the claims submitted by the user. 
@@ -23,22 +24,23 @@ The FSA Calculation Application is a system for FSA claims. This allows the user
 
 ## Getting Started
 ### Installation
-1. Clone the repository to your local machine:
+  1. Clone the repository to your local machine:
    ```sh
    git clone https://github.com/yourusername/claims-management-app.git
+   ```
 
-##Usage
-###Create new claim 
+## Usage
+### Create new claim 
    Submit a new claim with the relevant information required.
 
-###Edit
+### Edit
    Update the data of the selected pending claim.
 
-###Delete
+### Delete
    Delete the selected pending claim.
 
-###Claims List 
+### Claims List 
    Viewing of submitted claims.
 
-###Claims Approval
+### Claims Approval
    An administrator page for approval or denial of pending submitted claims.
