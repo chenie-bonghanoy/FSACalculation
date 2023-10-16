@@ -41,7 +41,7 @@ namespace FSACalculation.Controllers
             _configuration = configuration;
 
             _httpClient = new HttpClient();
-            _baseUrl = _configuration.GetValue<string>("");
+            _baseUrl = _configuration.GetValue<string>("ConnectionStrings:BaseUrl");
             _httpClient.BaseAddress = new Uri(_baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
