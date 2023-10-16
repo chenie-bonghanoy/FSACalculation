@@ -26,7 +26,7 @@ The FSA Calculation Application is a system for FSA claims. This allows the user
 ### Installation
   1. Clone the repository to your local machine:
    ```sh
-   git clone https://github.com/yourusername/claims-management-app.git
+   git clone https://github.com/chenie-bonghanoy/FSACalculation.git
    ```
 
 ## Usage
