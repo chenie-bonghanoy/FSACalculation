@@ -23,6 +23,7 @@ namespace FSACalculation.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IClaimsRepository _repository;
         private readonly UserManager<UserLogin> _userManager;
+        private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
         public IMapper _mapper { get; }
@@ -30,15 +31,17 @@ namespace FSACalculation.Controllers
         public HomeController(ILogger<HomeController> logger, 
             IClaimsRepository repository, 
             IMapper mapper, 
-            UserManager<UserLogin> userManager)
+            UserManager<UserLogin> userManager, 
+            IConfiguration configuration)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
             _userManager = userManager;
+            this._configuration = configuration;
 
             _httpClient = new HttpClient();
-            _baseUrl = "https://localhost:7031";
+            _baseUrl = _configuration.GetValue<string>("ConnectionStrings:BaseUrl");
             _httpClient.BaseAddress = new Uri(_baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
