@@ -62,8 +62,14 @@ namespace FSACalculation.Controllers
             var user = _userManager.FindByNameAsync(this.User.Identity.Name).Result;
             var empId = user.empId;
             var emp = HttpContext.User.Identity;
-            HttpResponseMessage response;
             
+            if (user.isAdmin == 1)
+            {
+                return RedirectToAction("AdminApproval", "Home");
+            }
+
+            HttpResponseMessage response;
+
             response = _httpClient.GetAsync($"api/empclaims/{empId}").Result;
             string content = string.Empty;
             if (response.IsSuccessStatusCode)

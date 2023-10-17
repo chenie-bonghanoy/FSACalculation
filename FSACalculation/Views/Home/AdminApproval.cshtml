@@ -56,30 +56,30 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            <tr>
-                   <td>
-                @Html.DisplayFor(modelItem => item.DateSubmitted)
+        <tr>
+            <td>
+                @item.DateSubmitted.ToShortDateString()
             </td>
             <td>
                 @((Status.StatusType)@item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReceiptDate)
+                @item.ReceiptDate.ToShortDateString()
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReceiptNo)
+                @item.ReceiptNo
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReceiptAmount)
+                @item.ReceiptAmount
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ClaimAmount)
+                @item.ClaimAmount
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalClaimAmount)
+                @item.TotalClaimAmount
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReferenceNo)
+                @item.ReferenceNo
             </td>
             <td>
                 @if (item.Status == (int)Status.StatusType.Pending)
