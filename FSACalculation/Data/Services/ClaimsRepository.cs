@@ -1,11 +1,11 @@
-﻿using FSACalculation.DBContext;
-using FSACalculation.Entities;
+﻿using FSACalculation.Data.DBContext;
+using FSACalculation.Data.Entities;
 using FSACalculation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace FSACalculation.Services
+namespace FSACalculation.Data.Services
 {
     public class ClaimsRepository : IClaimsRepository
     {
@@ -33,7 +33,7 @@ namespace FSACalculation.Services
 
         public async Task<bool> EmployeeExistAsync(int empId)
         {
-            return await _context.Employees.AnyAsync(e => e.Id == empId); 
+            return await _context.Employees.AnyAsync(e => e.Id == empId);
         }
 
         public async Task<IEnumerable<Claims?>> GetAllClaimsAsync()
@@ -58,7 +58,7 @@ namespace FSACalculation.Services
 
         public async Task<bool> SaveChangesAsync()
         {
-            return (await _context.SaveChangesAsync() >= 0);
+            return await _context.SaveChangesAsync() >= 0;
         }
     }
 }

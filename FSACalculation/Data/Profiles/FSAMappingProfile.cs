@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using FSACalculation.Entities;
+using FSACalculation.Data.Entities;
 using FSACalculation.ViewModels;
 
-namespace FSACalculation.Profiles
+namespace FSACalculation.Data.Profiles
 {
     public class FSAMappingProfile : Profile
     {

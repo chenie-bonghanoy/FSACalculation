@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace FSACalculation.Entities
+namespace FSACalculation.Data.Entities
 {
     public class UserLogin : IdentityUser
     {

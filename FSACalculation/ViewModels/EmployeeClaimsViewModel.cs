@@ -1,4 +1,4 @@
-﻿using FSACalculation.Entities;
+﻿using FSACalculation.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace FSACalculation.ViewModels
