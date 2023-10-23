@@ -1,24 +1,19 @@
 ﻿using AutoMapper;
-using FSACalculation.Controllers;
-using FSACalculation.Entities;
-using FSACalculation.Services;
+using FSACalculation.APIControllers;
+using FSACalculation.Data.Entities;
+using FSACalculation.Data.Services;
 using FSACalculation.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using NuGet.ContentModel;
+using System.Net;
 
 namespace FSACalculation.Test
 {
     public class EmpClaimsControllerTest
     {
         [Fact]
-        public void GetAllClaimsTest()
+        public async void GetAllClaimsTest()
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
@@ -30,19 +25,34 @@ namespace FSACalculation.Test
             _repository.Setup(m => m.GetAllClaimsAsync())
                 .ReturnsAsync(claimsView);
 
+            IEnumerable<ClaimsViewModel> viewModel = new ClaimsViewModel[]
+            {
+                new ClaimsViewModel
+                {
+                    ClaimId = 1
+                }
+            };
+
             var _mapper = new Mock<IMapper>();
+            _mapper.Setup(m => m.Map<IEnumerable<ClaimsViewModel>>(claimsView)).Returns(viewModel);
+
             var controller = new EmpClaimsController(_repository.Object, _mapper.Object);
 
             // Act
-            var result = controller.GetAllClaims();
+            var result = await controller.GetAllClaims();
+            var okresult = result.Result as OkObjectResult;
 
             // Assert
             //verify GetAllClaimsAsync is called 
             _repository.Verify(r => r.GetAllClaimsAsync());
+
+            //verify statuscode and data 
+            Assert.Equal((int)HttpStatusCode.OK, okresult.StatusCode);
+            Assert.Equal(viewModel, okresult.Value);
         }
 
         [Fact]
-        public void GetClaimsTest()
+        public async void GetClaimsTest()
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
@@ -53,20 +63,28 @@ namespace FSACalculation.Test
             _repository.Setup(m => m.GetClaimsAsync(It.IsAny<int>()))
                 .ReturnsAsync(emp);
 
+            var viewModel = new EmployeeClaimsViewModel { Id = 1 };
+
             var _mapper = new Mock<IMapper>();
+            _mapper.Setup(m => m.Map<EmployeeClaimsViewModel>(emp)).Returns(viewModel);
+
             var controller = new EmpClaimsController(_repository.Object, _mapper.Object);
 
             // Act
-            var result = controller.GetClaims(It.IsAny<int>());
+            var result = await controller.GetClaims(It.IsAny<int>());
+            var okresult = result.Result as OkObjectResult;
 
             // Assert
             //verify EmployeeExistAsync, GetClaimsAsync is called 
             _repository.Verify(r => r.EmployeeExistAsync(It.IsAny<int>()));
             _repository.Verify(r => r.GetClaimsAsync(It.IsAny<int>()));
+
+            Assert.Equal((int)HttpStatusCode.OK, okresult.StatusCode);
+            Assert.Equal(viewModel, okresult.Value);
         }
         
         [Fact]
-        public void CreateClaimsTest()
+        public async void CreateClaimsTest()
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
@@ -80,17 +98,20 @@ namespace FSACalculation.Test
             var controller = new EmpClaimsController(_repository.Object, _mapper.Object);
 
             // Act
-            var result = controller.CreateClaims(It.IsAny<int>(), It.IsAny<ClaimsForCreateViewModel>());
+            var result = await controller.CreateClaims(It.IsAny<int>(), It.IsAny<ClaimsForCreateViewModel>());
+            var okresult = result.Result as OkResult;
 
             // Assert
             //verify methods calls
             _repository.Verify(r => r.EmployeeExistAsync(It.IsAny<int>()));
             _repository.Verify(r => r.AddClaims(It.IsAny<int>(), It.IsAny<Claims>()));
             _repository.Verify(r => r.SaveChangesAsync());
+
+            Assert.Equal((int)HttpStatusCode.OK, okresult.StatusCode);
         }
 
         [Fact]
-        public void UpdateClaimsTest()
+        public async void UpdateClaimsTest()
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
@@ -108,13 +129,16 @@ namespace FSACalculation.Test
             mockViewModel.ClaimId = It.IsAny<int>();
             
             // Act
-            var result = controller.UpdateClaims(It.IsAny<int>(), mockViewModel);
+            var result = await controller.UpdateClaims(It.IsAny<int>(), mockViewModel);
+            var okResult = result.Result as OkResult;
 
             // Assert
             //verify methods calls
             _repository.Verify(r => r.EmployeeExistAsync(It.IsAny<int>()));
             _repository.Verify(r => r.GetClaim(It.IsAny<int>(), It.IsAny<int>()));
             _repository.Verify(r => r.SaveChangesAsync());
+
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [Fact]
@@ -140,6 +164,7 @@ namespace FSACalculation.Test
             
             // Act
             var result = controller.AdminApprovalAsync(It.IsAny<int>(), It.IsAny<int>(), mockViewModel);
+            var okResult = result.Result as OkResult;
 
             // Assert
             //verify methods calls
@@ -147,10 +172,12 @@ namespace FSACalculation.Test
             _repository.Verify(r => r.GetEmployeeByIdAsync(It.IsAny<int>()));
             _repository.Verify(r => r.GetClaim(It.IsAny<int>(), It.IsAny<int>()));
             _repository.Verify(r => r.SaveChangesAsync());
+
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
         }
 
         [Fact]
-        public void DeleteClaimsTest()
+        public async void DeleteClaimsTest()
         {
             // Arrange
             var _repository = new Mock<IClaimsRepository>();
@@ -169,12 +196,15 @@ namespace FSACalculation.Test
             
             // Act
             var result = controller.DeleteClaims(It.IsAny<int>(), It.IsAny<int>());
+            var okResult = result.Result as OkResult;
 
             // Assert
             //verify methods calls
             _repository.Verify(r => r.EmployeeExistAsync(It.IsAny<int>()));
             _repository.Verify(r => r.GetClaim(It.IsAny<int>(), It.IsAny<int>()));
             _repository.Verify(r => r.SaveChangesAsync());
+
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
         }
     }
 }

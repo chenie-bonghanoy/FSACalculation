@@ -1,9 +1,8 @@
-using FSACalculation.DBContext;
-using FSACalculation.Entities;
-using FSACalculation.Services;
+using FSACalculation.Data.DBContext;
+using FSACalculation.Data.Entities;
+using FSACalculation.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -16,6 +15,32 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddAuthentication()
+    .AddCookie()
+    .AddJwtBearer(cfg =>
+    {
+        cfg.SaveToken = true;
+        cfg.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidIssuer = builder.Configuration["Tokens:Issuer"],
+            ValidAudience = builder.Configuration["Tokens:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Tokens:Key"]))
+        };
+    }
+    );
+
+//builder.Services.AddAuthentication(options =>
+//    {
+//        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    });
+
+//builder.Services.AddAuthorization(auth =>
+//{
+//    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+//        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+//        .RequireAuthenticatedUser().Build());
+//});
+
 builder.Services.AddDbContext<FSAInfoContext>
     (
     options => options.UseSqlServer(builder.Configuration["ConnectionStrings:FSADB"])
@@ -27,7 +52,6 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
-
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -52,6 +76,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseAuthentication();

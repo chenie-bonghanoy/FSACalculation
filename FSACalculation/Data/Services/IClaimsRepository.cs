@@ -1,8 +1,8 @@
-﻿using FSACalculation.Entities;
+﻿using FSACalculation.Data.Entities;
 using FSACalculation.ViewModels;
 using System.Security.Claims;
 
-namespace FSACalculation.Services
+namespace FSACalculation.Data.Services
 {
     public interface IClaimsRepository
     {

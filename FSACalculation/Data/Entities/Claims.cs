@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FSACalculation.Entities
+namespace FSACalculation.Data.Entities
 {
     public class Claims
     {
@@ -14,7 +14,7 @@ namespace FSACalculation.Entities
         public DateTime ReceiptDate { get; set; }
         [StringLength(10)]
         public string? ReceiptNo { get; set; }
-        [Precision(10 , 2)]
+        [Precision(10, 2)]
         public decimal ReceiptAmount { get; set; }
         [Precision(10, 2)]
         public decimal ClaimAmount { get; set; }
