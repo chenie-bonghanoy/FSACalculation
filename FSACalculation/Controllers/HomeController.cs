@@ -27,11 +27,10 @@ namespace FSACalculation.Controllers
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
         public IMapper _mapper { get; }
-
-        public HomeController(ILogger<HomeController> logger, 
-            IClaimsRepository repository, 
-            IMapper mapper, 
-            UserManager<UserLogin> userManager, 
+        public HomeController(ILogger<HomeController> logger,
+            IClaimsRepository repository,
+            IMapper mapper,
+            UserManager<UserLogin> userManager,
             IConfiguration configuration)
         {
             _logger = logger;
@@ -62,7 +61,7 @@ namespace FSACalculation.Controllers
             var user = _userManager.FindByNameAsync(this.User.Identity.Name).Result;
             var empId = user.empId;
             var emp = HttpContext.User.Identity;
-            
+
             if (user.isAdmin == 1)
             {
                 return RedirectToAction("AdminApproval", "Home");
@@ -136,11 +135,11 @@ namespace FSACalculation.Controllers
 
         public IActionResult CreateClaim(int id)
         {
-            return View(); 
+            return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdateClaim(string id, string claimId, ClaimsForUpdateViewModel viewModel) 
+        public async Task<ActionResult> UpdateClaim(string id, string claimId, ClaimsForUpdateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
