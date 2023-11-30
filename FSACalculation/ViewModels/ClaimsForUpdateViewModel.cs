@@ -11,7 +11,6 @@ namespace FSACalculation.ViewModels
         [DataType(DataType.Date)]
         [DisplayName("Date Submitted")]
         public DateTime DateSubmitted { get; set; }
-
         public int Status { get; set; }
 
         [Required]
